@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Happy Birthday Maryammmm! 💗🎀</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Canvas Confetti CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <style>
+    :root {
+      --bg-gradient: linear-gradient(135deg, #ffeef2 0%, #fff5f7 50%, #f0e6ff 100%);
+      --card-bg: rgba(255, 255, 255, 0.94);
+      --accent: #ff85a2;
+      --accent-hover: #ff6b8b;
+      --text-main: #4a3e43;
+      --text-muted: #7a6871;
+      --pink-soft: #fbb6ce;
+      --pink-light: #ffe4e9;
+      --shadow: 0 12px 35px rgba(255, 133, 162, 0.18);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background: var(--bg-gradient);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow-x: hidden;
+      padding: 15px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 580px;
+      position: relative;
+    }
+
+    .screen {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      background: var(--card-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 28px;
+      padding: 35px 22px;
+      box-shadow: var(--shadow);
+      border: 2px solid #ffffff;
+      animation: fadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .screen.active {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(15px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .title {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 12px;
+      line-height: 1.3;
+    }
+
+    .subtitle {
+      font-size: 1rem;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+      line-height: 1.5;
+    }
+
+    /* Screen 1: Runaway Button */
+    .button-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      min-height: 180px;
+      position: relative;
+    }
+
+    .btn {
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 14px 32px;
+      border-radius: 50px;
+      font-size: 1.05rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(255, 133, 162, 0.35);
+      transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      z-index: 10;
+    }
+
+    .btn:active {
+      transform: scale(0.95);
+    }
+
+    .btn-no {
+      background: #e2d9dc;
+      color: #6b5b62;
+      box-shadow: none;
+      position: absolute;
+      z-index: 20;
+      transition: all 0.15s ease-out;
+    }
+
+    .subtext-hint {
+      font-size: 0.9rem;
+      color: var(--accent);
+      margin-top: 15px;
+      min-height: 24px;
+      font-weight: 600;
+    }
+
+    /* Screen 2: Balloons */
+    .balloon-counter {
+      font-weight: 700;
+      color: var(--accent);
+      background: var(--pink-light);
+      padding: 6px 18px;
+      border-radius: 20px;
+      font-size: 0.95rem;
+      margin-bottom: 20px;
+    }
+
+    .balloon-area {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 18px;
+      margin: 15px 0 25px 0;
+      min-height: 180px;
+      width: 100%;
+    }
+
+    .balloon {
+      width: 65px;
+      height: 80px;
+      border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+      cursor: pointer;
+      position: relative;
+      animation: float 3s ease-in-out infinite alternate;
+      box-shadow: inset -8px -8px 0 rgba(0,0,0,0.07);
+      transition: transform 0.2s;
+    }
+
+    .balloon::after {
+      content: "▲";
+      position: absolute;
+      bottom: -9px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: inherit;
+      font-size: 9px;
+    }
+
+    .balloon::before {
+      content: "";
+      position: absolute;
+      bottom: -20px;
+      left: 50%;
+      width: 1.5px;
+      height: 14px;
+      background: rgba(0,0,0,0.15);
+    }
+
+    .balloon:nth-child(1) { background: #ffb3c6; animation-delay: 0s; }
+    .balloon:nth-child(2) { background: #ff85a2; animation-delay: 0.5s; }
+    .balloon:nth-child(3) { background: #f7aef8; animation-delay: 1s; }
+    .balloon:nth-child(4) { background: #b388ff; animation-delay: 0.2s; }
+    .balloon:nth-child(5) { background: #ff9ebb; animation-delay: 0.7s; }
+
+    @keyframes float {
+      0% { transform: translateY(0px) rotate(-3deg); }
+      100% { transform: translateY(-14px) rotate(3deg); }
+    }
+
+    /* Modal Popup */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.35);
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      padding: 20px;
+    }
+
+    .modal-card {
+      background: white;
+      padding: 28px 24px;
+      border-radius: 24px;
+      max-width: 380px;
+      width: 100%;
+      text-align: center;
+      box-shadow: var(--shadow);
+      animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    @keyframes popIn {
+      from { transform: scale(0.8); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .modal-text {
+      font-size: 1.05rem;
+      color: var(--text-main);
+      line-height: 1.6;
+      margin-bottom: 20px;
+      font-weight: 500;
+    }
+
+    /* Screen 3: Letter Card */
+    .letter-card {
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 22px 20px;
+      box-shadow: inset 0 0 12px rgba(0,0,0,0.02);
+      border: 1px solid #f3e6e8;
+      max-height: 380px;
+      overflow-y: auto;
+      text-align: left;
+      margin-bottom: 22px;
+      line-height: 1.7;
+      color: #5a4b51;
+      font-size: 0.95rem;
+    }
+
+    .letter-card p {
+      margin-bottom: 14px;
+    }
+
+    .handwritten-sig {
+      font-family: 'Caveat', cursive;
+      font-size: 1.55rem;
+      color: var(--accent);
+      text-align: right;
+      margin-top: 12px;
+      font-weight: 700;
+    }
+
+    /* Screen 4: Cake & Candle */
+    .cake-container {
+      margin: 35px 0 25px 0;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .cake {
+      width: 140px;
+      height: 95px;
+      background: #f7aef8;
+      border-radius: 16px 16px 0 0;
+      position: relative;
+      margin: 0 auto;
+      box-shadow: inset 0 12px 0 #ffe4e9;
+    }
+
+    .cake::before {
+      content: "";
+      position: absolute;
+      top: 38px;
+      left: 0;
+      width: 100%;
+      height: 12px;
+      background: #ff85a2;
+    }
+
+    .plate {
+      width: 180px;
+      height: 12px;
+      background: #e0e0e0;
+      border-radius: 10px;
+      margin: 0 auto;
+    }
+
+    .candle {
+      width: 10px;
+      height: 36px;
+      background: #b388ff;
+      position: absolute;
+      top: -36px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: 3px;
+    }
+
+    .flame {
+      width: 12px;
+      height: 18px;
+      background: #ffb703;
+      border-radius: 50% 50% 20% 20%;
+      position: absolute;
+      top: -18px;
+      left: 50%;
+      transform: translateX(-50%);
+      box-shadow: 0 0 12px #ffb703;
+      animation: flicker 0.6s infinite alternate;
+    }
+
+    .flame.off {
+      display: none;
+    }
+
+    @keyframes flicker {
+      0% { transform: translateX(-50%) scale(1); }
+      100% { transform: translateX(-50%) scale(1.18); }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- SCREEN 1: Trap Question -->
+  <div class="screen active" id="screen1">
+    <div class="title">Hey Maryammmm! 🎀</div>
+    <div class="subtitle">I have a super important question for you... Are you ready to claim your official birthday surprise? 🥹</div>
+    
+    <div class="button-container" id="btnContainer">
+      <button class="btn" id="yesBtn" onclick="goToScreen(2)">YES! ✨</button>
+      <button class="btn btn-no" id="noBtn" onclick="handleNoAttempt(event)" onmouseover="handleNoAttempt(event)" ontouchstart="handleNoAttempt(event)">NO 😜</button>
+    </div>
+    <div class="subtext-hint" id="noHint"></div>
+  </div>
+
+  <!-- SCREEN 2: Balloon Popping -->
+  <div class="screen" id="screen2">
+    <div class="title">Pop the Balloons! 🎈</div>
+    <div class="subtitle">Each balloon holds a cute reason why you're such an awesome friend. Pop them all!</div>
+    <div class="balloon-counter" id="counter">Popped: 0 / 5</div>
+    
+    <div class="balloon-area" id="balloonArea">
+      <div class="balloon" onclick="popBalloon(this, 0)"></div>
+      <div class="balloon" onclick="popBalloon(this, 1)"></div>
+      <div class="balloon" onclick="popBalloon(this, 2)"></div>
+      <div class="balloon" onclick="popBalloon(this, 3)"></div>
+      <div class="balloon" onclick="popBalloon(this, 4)"></div>
+    </div>
+    
+    <button class="btn" id="nextToLetterBtn" style="display:none;" onclick="goToScreen(3)">Read Your Letter 💌</button>
+  </div>
+
+  <!-- SCREEN 3: The Heartfelt Letter -->
+  <div class="screen" id="screen3">
+    <div class="title">To Maryammmm 💗</div>
+    <div class="subtitle">A special birthday note across the border... 🇮🇳❤️🇵🇰</div>
+    
+    <div class="letter-card">
+      <p><strong>To my favourite Pakistani girl, Maryammmm 💗🎀</strong></p>
+      <p>Happiest Birthday, Maryammmm! 🥹❤️‍🩹</p>
+      <p>If someone had told me that I’d meet a person from Pakistan, never actually meet her in real life, and still end up feeling this close to her, I probably wouldn’t have believed it. But here we are. And honestly, I’m really glad our paths crossed.</p>
+      <p>You know what’s funny? Sometimes people spend years around each other and never become anything more than strangers who happen to know each other. And then there are people who come into your life unexpectedly and, in such a short time, somehow find a little place in your heart without even trying. You became one of those people for me. ❤️</p>
+      <p>Even though there’s a whole country between us, I hope you know that distance doesn’t make a friendship any less real. We might not have memories of meeting, taking pictures together, or sitting somewhere and talking for hours in person yet but we have our own little connection, and I think that’s special in its own way.</p>
+      <p>And today, I just want you to know how genuinely happy I am that you exist. Not just because it’s your birthday, but because somewhere in this huge world, there’s a person like you who I got lucky enough to know.</p>
+      <p>Maryammmm, I hope this new year of your life brings you the kind of happiness that stays, the kind of people who choose you without hesitation, the kind of love that makes you feel safe, and the kind of moments that make you smile even when nobody is watching. I hope every silent prayer you make finds its way to you, even the ones you never tell anyone about. And whenever life gets a little too heavy, I hope you remember that you deserve the same softness and kindness that you give to others.</p>
+      <p>Also, please never forget how precious you are, okay? Don’t let a bad day, a bad person, or one of those overthinking nights convince you otherwise. The world can be a little unfair sometimes, but I hope it gives you a thousand reasons to keep that beautiful smile of yours. And if it ever forgets to, well, I hope your friends are there to remind you. Including this one, obviously. 🤭❤️</p>
+      <p>And can I just say something? It’s actually a little crazy how someone I’ve never met can become someone whose happiness matters to me. I don’t know when exactly you went from being just another person I knew to my Maryammmm, but somewhere along the way, you did. And I’m not complaining. Not even a little. 🫶🏻</p>
+      <p>One day, I hope we get to laugh about how this friendship started, how India and Pakistan couldn’t stop us from becoming friends, and how we somehow managed to become close without ever having sat across from each other. And when that day comes, I’m sure we’ll have so much to talk about.</p>
+      <p>Until then, here’s a little birthday wish from my side of the border to yours: may you always have reasons to feel loved, people who understand your silence, opportunities that make you proud of yourself, and a life that turns out even more beautiful than the one you’re dreaming of right now.</p>
+      <p>Happy Birthday once again, Maryammmm. 🎂💗</p>
+      <p>Stay the adorable, wonderful, slightly crazy person you are. Keep smiling, keep dreaming, keep being yourself, and please take good care of that heart of yours.</p>
+      <p>And if today gets busy and you receive a hundred birthday wishes, I hope this little letter makes you pause for a moment and smile. Because somewhere in India, there’s a friend who genuinely wanted your day to feel a little more special.</p>
+      <p>Sending you the biggest hug across the border. 🇮🇳❤️🇵🇰</p>
+      <div class="handwritten-sig">From your Indian friend, who is really glad he found you. 🫂💌</div>
+    </div>
+
+    <button class="btn" onclick="goToScreen(4)">One Last Surprise... 🎂</button>
+  </div>
+
+  <!-- SCREEN 4: Cake & Wish -->
+  <div class="screen" id="screen4">
+    <div class="title">Make a Wish! 🕯️✨</div>
+    <div class="subtitle">Tap the candle flame or click the button below to blow out your birthday candle!</div>
+    
+    <div class="cake-container" onclick="blowCandle()">
+      <div class="candle">
+        <div class="flame" id="flame"></div>
+      </div>
+      <div class="cake"></div>
+      <div class="plate"></div>
+    </div>
+
+    <button class="btn" id="blowBtn" onclick="blowCandle()">Blow Out Candle 💨</button>
+    <div class="subtitle" id="finalMsg" style="display:none; margin-top: 20px; font-size: 1.15rem; font-weight: 700; color: var(--accent);">
+      May all your wishes come true, Maryammmm! 🥳💖✨
+    </div>
+  </div>
+
+</div>
+
+<!-- Balloon Modal Popup -->
+<div class="modal-overlay" id="popModal">
+  <div class="modal-card">
+    <div class="modal-text" id="modalText"></div>
+    <button class="btn" onclick="closeModal()">Sweet! 💕</button>
+  </div>
+</div>
+
+<script>
+  let noAttempts = 0;
+  let yesScale = 1;
+  const hints = [
+    "Nope, try again! 😜",
+    "Too slow! 🏃‍♀️",
+    "Nice try, but you can't say NO! 😂",
+    "You really thought? 🙈",
+    "Okay fine, YES is your only option left! ✨"
+  ];
+
+  // Positions for NO button to jump around safely without hitting YES
+  const positions = [
+    { top: '10px', left: '15px' },
+    { top: '10px', right: '15px', left: 'auto' },
+    { bottom: '10px', left: '15px', top: 'auto' },
+    { bottom: '10px', right: '15px', left: 'auto', top: 'auto' },
+    { top: '40%', left: '10px' },
+    { top: '40%', right: '10px', left: 'auto' }
+  ];
+
+  function handleNoAttempt(e) {
+    if (e) e.preventDefault();
+    
+    const noBtn = document.getElementById('noBtn');
+    const yesBtn = document.getElementById('yesBtn');
+    const hint = document.getElementById('noHint');
+
+    // Pick next safe position
+    const pos = positions[noAttempts % positions.length];
+    
+    noBtn.style.top = pos.top || 'auto';
+    noBtn.style.bottom = pos.bottom || 'auto';
+    noBtn.style.left = pos.left || 'auto';
+    noBtn.style.right = pos.right || 'auto';
+
+    // Grow the YES button to make it funnier
+    yesScale += 0.12;
+    yesBtn.style.transform = `scale(${yesScale})`;
+
+    hint.innerText = hints[Math.min(noAttempts, hints.length - 1)];
+    noAttempts++;
+
+    if (noAttempts >= 6) {
+      noBtn.style.display = 'none';
+    }
+  }
+
+  function goToScreen(screenNum) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(`screen${screenNum}`).classList.add('active');
+    
+    if (screenNum === 2) {
+      confetti({ particleCount: 50, spread: 60, origin: { y: 0.6 } });
+    }
+  }
+
+  /* Balloon Logic */
+  let poppedCount = 0;
+  const balloonMessages = [
+    "Your kindness and warmth radiate across borders! 🌸",
+    "You always know how to put a smile on someone's face! ✨",
+    "Distance means nothing when a friendship is this real! 🇵🇰❤️🇮🇳",
+    "You deserve all the happiness, peace, and soft moments in the world! 🥹",
+    "You are truly precious and one-of-a-kind, Maryammmm! 🎀"
+  ];
+
+  function popBalloon(element, index) {
+    element.style.visibility = 'hidden';
+    poppedCount++;
+    document.getElementById('counter').innerText = `Popped: ${poppedCount} / 5`;
+    
+    confetti({ particleCount: 30, spread: 50, origin: { y: 0.7 } });
+    
+    document.getElementById('modalText').innerText = balloonMessages[index];
+    document.getElementById('popModal').style.display = 'flex';
+
+    if (poppedCount === 5) {
+      document.getElementById('nextToLetterBtn').style.display = 'inline-block';
+    }
+  }
+
+  function closeModal() {
+    document.getElementById('popModal').style.display = 'none';
+  }
+
+  /* Candle Logic */
+  function blowCandle() {
+    const flame = document.getElementById('flame');
+    if (!flame.classList.contains('off')) {
+      flame.classList.add('off');
+      document.getElementById('blowBtn').style.display = 'none';
+      document.getElementById('finalMsg').style.display = 'block';
+
+      confetti({
+        particleCount: 150,
+        spread: 100,
+        origin: { y: 0.6 },
+        colors: ['#ff85a2', '#f7aef8', '#b388ff', '#ffd166']
+      });
+    }
+  }
+</script>
+
+</body>
+</html>
